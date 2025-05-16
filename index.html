@@ -37,39 +37,7 @@
         }
         return gk_fileData[filename] || "";
         }
-        </script><script type="text/javascript">
-        var gk_isXlsx = false;
-        var gk_xlsxFileLookup = {};
-        var gk_fileData = {};
-        function filledCell(cell) {
-          return cell !== '' && cell != null;
-        }
-        function loadFileData(filename) {
-        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-            try {
-                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-                var firstSheetName = workbook.SheetNames[0];
-                var worksheet = workbook.Sheets[firstSheetName];
-                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                var filteredData = jsonData.filter(row => row.some(filledCell));
-                var headerRowIndex = filteredData.findIndex((row, index) =>
-                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-                );
-                if (headerRowIndex === -1 || headerRowIndex > 25) {
-                  headerRowIndex = 0;
-                }
-                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex));
-                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-                return csv;
-            } catch (e) {
-                console.error(e);
-                return "";
-            }
-        }
-        return gk_fileData[filename] || "";
-        }
-</script>
-<!DOCTYPE html>
+        </script><!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
@@ -106,7 +74,7 @@
     .header {
       background-color: #1e90ff;
       color: #ffffff;
-      padding: 20px;
+      padding: 5px;
       border-bottom: 5px solid #ff6f61;
       position: fixed;
       top: 0;
@@ -117,88 +85,95 @@
       flex-direction: row;
       justify-content: space-between;
       align-items: center;
-      height: 100px;
+      height: 60px;
       z-index: 1001;
     }
     .title-container {
-      margin-left: 10px;
-      flex: 1;
+      width: 70%;
+      padding-left: 5px;
     }
     .header h1 {
-      margin: 0 0 5px 0;
-      font-size: 2em;
+      margin: 0;
+      font-size: 1.8em;
       font-weight: 600;
       text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
     }
     .header p {
       margin: 0;
-      font-size: 1em;
+      font-size: 0.9em;
       font-weight: 400;
     }
     .audio-controls {
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
       align-items: center;
+      justify-content: flex-end;
       background-color: #1e90ff;
-      padding: 5px 8px;
-      border-radius: 15px;
+      padding: 2px;
+      border-radius: 10px;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-      width: 120px;
-      margin: 0 auto;
+      width: 25%;
+      max-width: 80px;
+      margin-right: 5px;
     }
     .control-buttons {
       display: flex;
       justify-content: center;
       align-items: center;
-      width: 100%;
-      margin-bottom: 6px;
     }
     .control-buttons .control-btn {
       cursor: pointer;
       color: #ffffff;
-      font-size: 1em;
-      margin: 0 6px;
+      font-size: 0.7em;
+      margin: 0 1px;
       transition: transform 0.1s ease;
+      min-width: 32px;
+      min-height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      touch-action: manipulation;
     }
     .control-buttons .control-btn:hover {
-      transform: scale(1.2);
+      transform: scale(1.1);
     }
     .control-buttons .play-pause-btn {
-      width: 25px;
-      height: 25px;
+      width: 14px;
+      height: 14px;
       background-color: #ffffff;
       border-radius: 50%;
       display: flex;
       justify-content: center;
       align-items: center;
       color: #1e90ff;
-      font-size: 1em;
+      font-size: 0.6em;
     }
     .volume-icon {
       display: flex;
       justify-content: center;
       align-items: center;
-      width: 24px;
-      height: 24px;
+      width: 14px;
+      height: 14px;
       cursor: pointer;
       color: #ffffff;
       background-color: rgba(255, 255, 255, 0.1);
       border-radius: 50%;
       transition: transform 0.2s ease, background-color 0.2s ease;
-      margin-top: 8px;
+      margin-left: 2px;
+      touch-action: manipulation;
     }
     .volume-icon:hover {
       transform: scale(1.15);
       background-color: rgba(255, 255, 255, 0.3);
     }
     .volume-icon svg {
-      width: 18px;
-      height: 18px;
+      width: 10px;
+      height: 10px;
       fill: #ffffff;
     }
     .waveform {
-      width: 100%;
-      height: 12px;
+      width: 35px;
+      height: 6px;
       background-color: #ffffff;
       border-radius: 5px;
       position: relative;
@@ -206,10 +181,11 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0 4px;
+      padding: 0 1px;
+      margin-left: 2px;
     }
     .waveform .bar {
-      width: 2px;
+      width: 0.7px;
       height: 100%;
       background-color: #1e90ff;
       border-radius: 2px;
@@ -232,13 +208,13 @@
     }
     .nav-menu {
       background-color: #3a3a3a;
-      padding: 10px;
+      padding: 6px;
       display: flex;
       justify-content: center;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 6px;
       position: fixed;
-      top: 100px;
+      top: 60px;
       width: 100%;
       max-width: 1200px;
       z-index: 1000;
@@ -246,7 +222,7 @@
       box-sizing: border-box;
     }
     .nav-item {
-      padding: 8px 12px;
+      padding: 6px 10px;
       background-color: #ff6f61;
       color: #ffffff;
       border-radius: 5px;
@@ -255,6 +231,9 @@
       transition: background-color 0.3s ease;
       text-decoration: none;
       font-size: 0.9em;
+      min-width: 44px;
+      text-align: center;
+      touch-action: manipulation;
     }
     .nav-item:hover {
       background-color: #ffffff;
@@ -305,6 +284,7 @@
       text-decoration: none;
       transition: background-color 0.3s ease;
       font-size: 0.9em;
+      touch-action: manipulation;
     }
     .dropdown-content a:hover {
       background-color: #ff6f61;
@@ -324,7 +304,7 @@
       display: block;
     }
     .tab-content {
-      padding: 20px;
+      padding: 15px;
       background-color: #3a3a3a;
       border-radius: 10px;
       margin: 10px;
@@ -336,13 +316,13 @@
     .tab-content h3 {
       color: #ff6f61;
       font-size: 1.2em;
-      margin: 20px 0 10px;
+      margin: 15px 0 10px;
       text-align: center;
     }
     .expand-btn {
       display: block;
-      margin: 20px auto;
-      padding: 10px 20px;
+      margin: 15px auto;
+      padding: 8px 16px;
       background-color: #ff6f61;
       color: #ffffff;
       border: none;
@@ -350,6 +330,9 @@
       cursor: pointer;
       font-weight: 600;
       transition: background-color 0.3s ease;
+      min-width: 44px;
+      min-height: 44px;
+      touch-action: manipulation;
     }
     .expand-btn:hover {
       background-color: #ffffff;
@@ -357,10 +340,10 @@
     }
     .expanded-message {
       display: none;
-      padding: 15px;
+      padding: 12px;
       background-color: #252525;
       border-radius: 10px;
-      margin: 20px 0;
+      margin: 15px 0;
       text-align: center;
       opacity: 0;
       transform: translateY(-10px);
@@ -373,8 +356,8 @@
     }
     .next-btn {
       display: inline-block;
-      margin-top: 10px;
-      padding: 8px 16px;
+      margin-top: 8px;
+      padding: 6px 12px;
       background-color: #ff6f61;
       color: #ffffff;
       border: none;
@@ -382,6 +365,9 @@
       cursor: pointer;
       font-weight: 600;
       transition: background-color 0.3s ease;
+      min-width: 44px;
+      min-height: 44px;
+      touch-action: manipulation;
     }
     .next-btn:hover {
       background-color: #ffffff;
@@ -391,43 +377,29 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 15px;
-      margin: 20px 0;
+      gap: 10px;
+      margin: 15px 0;
     }
     .product-card {
       background-color: #252525;
       border-radius: 10px;
-      padding: 10px;
-      width: calc(33.33% - 15px);
-      max-width: 160px;
+      padding: 8px;
+      width: calc(50% - 10px);
+      max-width: 140px;
       text-align: center;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
       box-sizing: border-box;
-      position: relative;
-    }
-    .product-card .image-wrapper {
-      position: relative;
-      width: 140px;
-      height: 140px;
-      margin: 0 auto;
     }
     .product-card img {
-      width: 140px;
-      height: 140px;
+      width: 120px;
+      height: 120px;
       border-radius: 5px;
-      display: block;
-      transition: all 0.3s ease;
+      object-fit: cover;
       cursor: pointer;
+      transition: transform 0.3s ease;
     }
-    .product-card.zoomed img {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 400px;
-      height: 400px;
-      z-index: 10000;
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+    .product-card img:hover {
+      transform: scale(1.05);
     }
     .product-card h4 {
       color: #ff6f61;
@@ -435,24 +407,91 @@
       font-size: 0.9em;
     }
     .product-card p {
-      font-size: 0.75em;
+      font-size: 0.7em;
       color: #ccc;
       margin: 0;
+      line-height: 1.4;
+    }
+    .zoom-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      z-index: 10000;
+      justify-content: center;
+      align-items: center;
+      touch-action: manipulation;
+    }
+    .zoom-overlay.active {
+      display: flex;
+    }
+    .zoom-image-container {
+      position: relative;
+      width: 300px;
+      height: 300px;
+    }
+    .zoom-image {
+      width: 300px;
+      height: 300px;
+      object-fit: cover;
+      border-radius: 10px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      transition: transform 0.3s ease;
+    }
+    .zoom-nav {
+      position: absolute;
+      width: 360px;
+      display: flex;
+      justify-content: space-between;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .zoom-btn {
+      background-color: #ff6f61;
+      color: #ffffff;
+      padding: 5px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.8em;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+      min-width: 30px;
+      min-height: 30px;
+      touch-action: manipulation;
+    }
+    .zoom-btn:hover {
+      background-color: #ffffff;
+      color: #ff6f61;
+    }
+    .zoom-btn.previous {
+      margin-left: 20px;
+    }
+    .zoom-btn.next {
+      margin-right: 20px;
     }
     .visitor-counter {
       text-align: center;
-      padding: 15px;
+      padding: 12px;
       background-color: #252525;
       border: 1px solid #00ffcc;
       border-radius: 8px;
-      margin: 20px auto;
-      max-width: 300px;
+      margin: 15px auto;
+      max-width: 250px;
       font-family: 'Orbitron', sans-serif;
       color: #00cc99;
       box-shadow: 0 0 10px rgba(0, 255, 204, 0.3);
     }
     .visitor-counter span {
-      font-size: 1.2em;
+      font-size: 1.1em;
       animation: pulse 2s infinite;
     }
     @keyframes pulse {
@@ -460,16 +499,122 @@
       50% { opacity: 0.7; }
       100% { opacity: 1; }
     }
+    .megaphone-message {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #ff6f61;
+      color: #ffffff;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+      z-index: 10000;
+      text-align: center;
+      font-size: 1em;
+      width: 90%;
+      max-width: 300px;
+    }
+    .megaphone-message button {
+      margin-top: 10px;
+      padding: 8px 16px;
+      background-color: #ffffff;
+      color: #ff6f61;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.9em;
+      min-width: 44px;
+      min-height: 44px;
+      touch-action: manipulation;
+    }
     @media (min-width: 768px) {
+      .container {
+        padding-top: 150px;
+      }
+      .header {
+        height: 80px;
+        padding: 10px;
+      }
+      .title-container {
+        width: 75%;
+        padding-left: 10px;
+      }
+      .header h1 {
+        font-size: 2em;
+      }
+      .header p {
+        font-size: 1em;
+      }
+      .audio-controls {
+        flex-direction: column;
+        width: 100px;
+        padding: 5px;
+        margin-right: 10px;
+        max-width: none;
+        justify-content: center;
+        align-items: center;
+      }
+      .control-buttons {
+        margin-bottom: 3px;
+      }
+      .control-buttons .control-btn {
+        font-size: 0.8em;
+        margin: 0 2px;
+        min-width: 36px;
+        min-height: 36px;
+      }
+      .control-buttons .play-pause-btn {
+        width: 20px;
+        height: 20px;
+        font-size: 0.8em;
+      }
+      .volume-icon {
+        width: 20px;
+        height: 20px;
+        margin-left: 0;
+        margin-top: 3px;
+      }
+      .volume-icon svg {
+        width: 14px;
+        height: 14px;
+      }
+      .waveform {
+        width: 80%;
+        height: 10px;
+        margin-left: 0;
+        padding: 0 2px;
+      }
+      .waveform .bar {
+        width: 1.2px;
+      }
+      .nav-menu {
+        padding: 10px;
+        gap: 8px;
+        top: 80px;
+      }
+      .nav-item {
+        padding: 8px 12px;
+        font-size: 0.9em;
+      }
       .product-card {
         width: calc(20% - 15px);
         max-width: 200px;
       }
-      .product-card h4 {
-        font-size: 1em;
+      .product-card img {
+        width: 140px;
+        height: 140px;
       }
-      .product-card p {
-        font-size: 0.85em;
+      .visitor-counter {
+        max-width: 300px;
+        padding: 15px;
+      }
+    }
+    @media (max-width: 600px) {
+      .product-card {
+        width: 100%;
+        max-width: 140px;
       }
     }
     @media (max-width: 768px) {
@@ -478,71 +623,69 @@
         margin: 0;
         border-radius: 0;
         min-height: 100vh;
-        padding-top: 130px;
+        padding-top: 100px;
       }
       .header {
-        padding: 15px;
-        height: 80px;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 5px;
+        height: 60px;
       }
       .title-container {
-        margin-left: 0;
-        text-align: center;
+        width: 70%;
+        padding-left: 5px;
       }
       .header h1 {
-        font-size: 1.8em;
+        font-size: 1.6em;
       }
       .header p {
-        font-size: 0.8em;
+        font-size: 0.75em;
+        line-height: 1.4;
       }
       .audio-controls {
-        width: 100px;
-        padding: 4px 6px;
-        margin: 10px auto 0;
-      }
-      .control-buttons {
-        margin-bottom: 4px;
+        width: 25%;
+        max-width: 80px;
+        padding: 2px;
+        margin-right: 5px;
       }
       .control-buttons .control-btn {
-        font-size: 0.9em;
-        margin: 0 4px;
+        font-size: 0.7em;
+        margin: 0 1px;
+        min-width: 32px;
+        min-height: 32px;
       }
       .control-buttons .play-pause-btn {
-        width: 20px;
-        height: 20px;
-        font-size: 0.9em;
+        width: 14px;
+        height: 14px;
+        font-size: 0.6em;
       }
       .volume-icon {
-        width: 20px;
-        height: 20px;
-        margin-top: 6px;
+        width: 14px;
+        height: 14px;
+        margin-left: 2px;
+        margin-top: 0;
       }
       .volume-icon svg {
-        width: 16px;
-        height: 16px;
+        width: 10px;
+        height: 10px;
       }
       .waveform {
-        height: 10px;
-        padding: 0 4px;
+        width: 35px;
+        height: 6px;
+        padding: 0 1px;
+        margin-left: 2px;
       }
       .waveform .bar {
-        width: 1.5px;
+        width: 0.7px;
       }
       .nav-menu {
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
-        padding: 8px;
-        gap: 6px;
-        top: 80px;
+        padding: 6px;
+        gap: 5px;
+        top: 60px;
       }
       .nav-item {
-        padding: 6px 10px;
-        font-size: 0.8em;
-        flex: 1 1 auto;
-        text-align: center;
+        padding: 5px 8px;
+        font-size: 0.75em;
       }
       .dropdown-content {
         width: 100%;
@@ -558,40 +701,42 @@
         padding: 8px 12px;
         text-align: center;
       }
-      .product-card {
-        width: calc(33.33% - 15px);
-        max-width: 150px;
+      .tab-content {
+        padding: 12px;
+        margin: 8px;
       }
-      .product-card.zoomed img {
-        max-width: 90vw;
-        max-height: 90vh;
-        width: auto;
-        height: auto;
+      .expand-btn {
+        padding: 6px 12px;
+        font-size: 0.9em;
+      }
+      .expanded-message {
+        padding: 10px;
+        font-size: 0.9em;
+      }
+      .next-btn {
+        padding: 5px 10px;
+        font-size: 0.8em;
       }
       .visitor-counter {
         max-width: 200px;
         padding: 10px;
+        font-size: 0.9em;
       }
-    }
-    .megaphone-message {
-      display: none;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background-color: #ff6f61;
-      color: #ffffff;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-      z-index: 10000;
-      text-align: center;
-      font-size: 1.2em;
-      animation: fadeIn 0.5s ease-in-out;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
+      .zoom-nav {
+        width: 340px;
+      }
+      .zoom-btn {
+        min-width: 28px;
+        min-height: 28px;
+        font-size: 0.7em;
+        padding: 4px;
+      }
+      .zoom-btn.previous {
+        margin-left: 15px;
+      }
+      .zoom-btn.next {
+        margin-right: 15px;
+      }
     }
   </style>
 </head>
@@ -731,85 +876,73 @@
         <button class="next-btn" id="next-btn-message" onclick="nextMessage()">Próxima Mensagem</button>
       </div>
       <div class="product-gallery">
-        <div class="product-card">
-          <div class="image-wrapper">
-            <img src="https://i.ibb.co/bRKK5bGv/15-Champgne200g.jpg" alt="Champgne 200g" onerror="this.onerror=null; this.src='https://via.placeholder.com/140?text=Imagem+Indisponível'; console.error('Failed to load Champgne 200g image');">
-          </div>
+        <div class="product-card" data-index="0">
+          <img src="https://i.ibb.co/bRKK5bGv/15-Champgne200g.jpg" alt="Champgne 200g" onerror="this.src='https://via.placeholder.com/120?text=Imagem+Indisponível';">
           <h4>Champgne 200g</h4>
           <p>Crocante e leve, ideal para acompanhar chá ou café.</p>
         </div>
-        <div class="product-card">
-          <div class="image-wrapper">
-            <img src="https://i.ibb.co/dsC9xz0s/16-Champgne250g.jpg" alt="Champgne 250g" onerror="this.onerror=null; this.src='https://via.placeholder.com/140?text=Imagem+Indisponível'; console.error('Failed to load Champgne 250g image');">
-          </div>
+        <div class="product-card" data-index="1">
+          <img src="https://i.ibb.co/dsC9xz0s/16-Champgne250g.jpg" alt="Champgne 250g" onerror="this.src='https://via.placeholder.com/120?text=Imagem+Indisponível';">
           <h4>Champgne 250g</h4>
           <p>Porção maior do clássico biscoito champgne, perfeito para compartilhar.</p>
         </div>
-        <div class="product-card">
-          <div class="image-wrapper">
-            <img src="https://i.ibb.co/svPh13Wx/17-Cappuccino.jpg" alt="Cappuccino" onerror="this.onerror=null; this.src='https://via.placeholder.com/140?text=Imagem+Indisponível'; console.error('Failed to load Cappuccino image');">
-          </div>
+        <div class="product-card" data-index="2">
+          <img src="https://i.ibb.co/svPh13Wx/17-Cappuccino.jpg" alt="Cappuccino" onerror="this.src='https://via.placeholder.com/120?text=Imagem+Indisponível';">
           <h4>Cappuccino</h4>
           <p>Sabor marcante de cappuccino, ideal para um lanche sofisticado.</p>
         </div>
-        <div class="product-card">
-          <div class="image-wrapper">
-            <img src="https://i.ibb.co/nqMccMRh/18-Bola-De-Ouro.jpg" alt="Bola de Ouro" onerror="this.onerror=null; this.src='https://via.placeholder.com/140?text=Imagem+Indisponível'; console.error('Failed to load Bola de Ouro image');">
-          </div>
+        <div class="product-card" data-index="3">
+          <img src="https://i.ibb.co/nqMccMRh/18-Bola-De-Ouro.jpg" alt="Bola de Ouro" onerror="this.src='https://via.placeholder.com/120?text=Imagem+Indisponível';">
           <h4>Bola de Ouro</h4>
           <p>Doce e crocante, um clássico que agrada todas as idades.</p>
         </div>
-        <div class="product-card">
-          <div class="image-wrapper">
-            <img src="https://i.ibb.co/xtS1WPns/19-Sete-Capas-Sal.jpg" alt="Sete Capas Sal" onerror="this.onerror=null; this.src='https://via.placeholder.com/140?text=Imagem+Indisponível'; console.error('Failed to load Sete Capas Sal image');">
-          </div>
+        <div class="product-card" data-index="4">
+          <img src="https://i.ibb.co/xtS1WPns/19-Sete-Capas-Sal.jpg" alt="Sete Capas Sal" onerror="this.src='https://via.placeholder.com/120?text=Imagem+Indisponível';">
           <h4>Sete Capas Sal</h4>
           <p>Biscoito salgado com camadas crocantes, perfeito para petiscos.</p>
         </div>
-        <div class="product-card">
-          <div class="image-wrapper">
-            <img src="https://i.ibb.co/JWqjDhVq/20-Sete-Capas-Doce.jpg" alt="Sete Capas Doce" onerror="this.onerror=null; this.src='https://via.placeholder.com/140?text=Imagem+Indisponível'; console.error('Failed to load Sete Capas Doce image');">
-          </div>
+        <div class="product-card" data-index="5">
+          <img src="https://i.ibb.co/JWqjDhVq/20-Sete-Capas-Doce.jpg" alt="Sete Capas Doce" onerror="this.src='https://via.placeholder.com/120?text=Imagem+Indisponível';">
           <h4>Sete Capas Doce</h4>
           <p>Versão doce com camadas delicadas, ideal para sobremesas.</p>
         </div>
-        <div class="product-card">
-          <div class="image-wrapper">
-            <img src="https://i.ibb.co/wNf22ddB/21-Del-cia.jpg" alt="Delícia" onerror="console.error('Failed to load Delícia image');">
-          </div>
+        <div class="product-card" data-index="6">
+          <img src="https://i.ibb.co/wNf22ddB/21-Del-cia.jpg" alt="Delícia" onerror="this.src='https://via.placeholder.com/120?text=Imagem+Indisponível';">
           <h4>Delícia</h4>
           <p>Biscoito artesanal com sabor irresistível, perfeito para lanches.</p>
         </div>
-        <div class="product-card">
-          <div class="image-wrapper">
-            <img src="https://i.ibb.co/zWTz227T/22-Sequilio.jpg" alt="Sequilho" onerror="this.onerror=null; this.src='https://via.placeholder.com/140?text=Imagem+Indisponível'; console.error('Failed to load Sequilho image');">
-          </div>
+        <div class="product-card" data-index="7">
+          <img src="https://i.ibb.co/zWTz227T/22-Sequilio.jpg" alt="Sequilho" onerror="this.src='https://via.placeholder.com/120?text=Imagem+Indisponível';">
           <h4>Sequilho</h4>
           <p>Leve e quebradiço, derrete na boca com cada mordida.</p>
         </div>
-        <div class="product-card">
-          <div class="image-wrapper">
-            <img src="https://i.ibb.co/fzXp062t/23-Peta.jpg" alt="Peta" onerror="this.onerror=null; this.src='https://via.placeholder.com/140?text=Imagem+Indisponível'; console.error('Failed to load Peta image');">
-          </div>
+        <div class="product-card" data-index="8">
+          <img src="https://i.ibb.co/fzXp062t/23-Peta.jpg" alt="Peta" onerror="this.src='https://via.placeholder.com/120?text=Imagem+Indisponível';">
           <h4>Peta</h4>
           <p>Crocante e saboroso, ótimo para acompanhar patês.</p>
         </div>
-        <div class="product-card">
-          <div class="image-wrapper">
-            <img src="https://i.ibb.co/wr4JwTmd/24-Biscoito-Goiaba.jpg" alt="Biscoito Goiaba" onerror="this.onerror=null; this.src='https://via.placeholder.com/140?text=Imagem+Indisponível'; console.error('Failed to load Biscoito Goiaba image');">
-          </div>
+        <div class="product-card" data-index="9">
+          <img src="https://i.ibb.co/wr4JwTmd/24-Biscoito-Goiaba.jpg" alt="Biscoito Goiaba" onerror="this.src='https://via.placeholder.com/120?text=Imagem+Indisponível';">
           <h4>Biscoito Goiaba</h4>
           <p>Recheado com o doce sabor de goiaba, uma delícia tropical.</p>
         </div>
-        <div class="product-card">
-          <div class="image-wrapper">
-            <img src="https://i.ibb.co/r23fjV48/25-Biscoito-Coco.jpg" alt="Biscoito Coco" onerror="this.onerror=null; this.src='https://via.placeholder.com/140?text=Imagem+Indisponível'; console.error('Failed to load Biscoito Coco image');">
-          </div>
+        <div class="product-card" data-index="10">
+          <img src="https://i.ibb.co/r23fjV48/25-Biscoito-Coco.jpg" alt="Biscoito Coco" onerror="this.src='https://via.placeholder.com/120?text=Imagem+Indisponível';">
           <h4>Biscoito Coco</h4>
           <p>Sabor intenso de coco, perfeito para os amantes de doces.</p>
         </div>
       </div>
       <div class="visitor-counter">Visitas: <span id="visit-count">1000</span></div>
+    </div>
+  </div>
+
+  <div class="zoom-overlay" id="zoom-overlay">
+    <div class="zoom-image-container">
+      <img class="zoom-image" id="zoom-image" src="" alt="Imagem Ampliada">
+      <div class="zoom-nav">
+        <button class="zoom-btn previous" onclick="navigateZoom('previous')" onmouseover="playHoverSound()">◄</button>
+        <button class="zoom-btn next" onclick="navigateZoom('next')" onmouseover="playHoverSound()">►</button>
+      </div>
     </div>
   </div>
 
@@ -828,7 +961,7 @@
 
   <div id="megaphone-message" class="megaphone-message">
     🎉 Temos boas ofertas para você! 🎉
-    <button onclick="hideMegaphoneMessage()" style="margin-top: 10px; padding: 5px 10px; background-color: #ffffff; color: #ff6f61; border: none; border-radius: 5px; cursor: pointer;">Fechar</button>
+    <button onclick="hideMegaphoneMessage()">Fechar</button>
   </div>
 
   <script>
@@ -981,20 +1114,12 @@
     audio.src = tracks[currentTrackIndex];
     audio.load();
 
-    audio.addEventListener('error', (e) => {
-      console.error("Audio load error:", e);
-      currentTrackIndex = 0;
-      audio.src = tracks[0];
-      audio.load();
-    });
-
-    audio.addEventListener('loadeddata', () => {
-      console.log("Audio loaded successfully: " + tracks[currentTrackIndex]);
-    });
-
-    audio.addEventListener('canplaythrough', () => {
-      console.log("Audio can play through: " + tracks[currentTrackIndex]);
-    });
+    let currentZoomIndex = -1;
+    let touchStartX = 0;
+    let touchEndX = 0;
+    const productCards = document.querySelectorAll('.product-card');
+    const zoomOverlay = document.getElementById('zoom-overlay');
+    const zoomImage = document.getElementById('zoom-image');
 
     function toggleDropdown(event, tabName) {
       event.preventDefault();
@@ -1007,12 +1132,9 @@
     }
 
     document.addEventListener('click', (event) => {
-      const dropdowns = document.querySelectorAll('.dropdown');
-      let isInsideDropdown = false;
-      dropdowns.forEach(dropdown => {
-        if (dropdown.contains(event.target)) isInsideDropdown = true;
-      });
-      if (!isInsideDropdown) dropdowns.forEach(dropdown => dropdown.classList.remove('open'));
+      if (!event.target.closest('.dropdown')) {
+        document.querySelectorAll('.dropdown').forEach(d => d.classList.remove('open'));
+      }
     });
 
     let messageIndex = 0;
@@ -1046,40 +1168,62 @@
       playClickSound();
     }
 
-    const productCards = document.querySelectorAll('.product-card');
-    productCards.forEach(card => {
+    function openZoom(index) {
+      currentZoomIndex = index;
+      const imgSrc = productCards[index].querySelector('img').src;
+      zoomImage.src = imgSrc;
+      zoomOverlay.classList.add('active');
+      zoomImage.style.transform = 'translate(-50%, -50%) scale(1)';
+    }
+
+    function closeZoom() {
+      zoomOverlay.classList.remove('active');
+      currentZoomIndex = -1;
+    }
+
+    function navigateZoom(direction) {
+      if (currentZoomIndex === -1) return;
+      let newIndex;
+      if (direction === 'next') {
+        newIndex = (currentZoomIndex + 1) % productCards.length;
+      } else {
+        newIndex = (currentZoomIndex - 1 + productCards.length) % productCards.length;
+      }
+      zoomImage.style.transform = direction === 'next' ? 'translate(-50%, -50%) translateX(-100%)' : 'translate(-50%, -50%) translateX(100%)';
+      setTimeout(() => {
+        openZoom(newIndex);
+      }, 300);
+    }
+
+    productCards.forEach((card, index) => {
       const img = card.querySelector('img');
-      const toggleZoom = (e) => {
-        e.preventDefault();
-        productCards.forEach(otherCard => otherCard.classList.remove('zoomed'));
-        card.classList.toggle('zoomed');
-      };
-      img.addEventListener('click', toggleZoom);
-      img.addEventListener('touchstart', toggleZoom, { passive: true });
+      img.addEventListener('click', () => openZoom(index));
     });
 
-    document.addEventListener('click', (e) => {
-      if (!e.target.closest('.product-card img')) {
-        productCards.forEach(card => card.classList.remove('zoomed'));
+    zoomOverlay.addEventListener('click', (e) => {
+      if (e.target === zoomOverlay) closeZoom();
+    });
+
+    zoomOverlay.addEventListener('touchstart', (e) => {
+      touchStartX = e.touches[0].clientX;
+    }, { passive: true });
+
+    zoomOverlay.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].clientX;
+      handleSwipe();
+    }, { passive: true });
+
+    function handleSwipe() {
+      const swipeDistance = touchEndX - touchStartX;
+      if (swipeDistance > 50) {
+        navigateZoom('previous');
+      } else if (swipeDistance < -50) {
+        navigateZoom('next');
       }
-    });
-
-    document.addEventListener('touchstart', (e) => {
-      if (!e.target.closest('.product-card img')) {
-        productCards.forEach(card => card.classList.remove('zoomed'));
-      }
-    });
-
-    function activateMegaphone() {
-      audio.volume = 1.0;
-      const megaphoneMessage = document.getElementById('megaphone-message');
-      megaphoneMessage.style.display = 'block';
-      setTimeout(hideMegaphoneMessage, 5000);
     }
 
     function hideMegaphoneMessage() {
-      const megaphoneMessage = document.getElementById('megaphone-message');
-      megaphoneMessage.style.display = 'none';
+      document.getElementById('megaphone-message').style.display = 'none';
     }
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -1087,9 +1231,9 @@
       visitCount++;
       localStorage.setItem('visitCount', visitCount);
       document.getElementById('visit-count').textContent = visitCount;
-      activateMegaphone();
+      document.getElementById('megaphone-message').style.display = 'block';
+      setTimeout(hideMegaphoneMessage, 5000);
     });
   </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'94025697ea2e6f85',t:'MTc0NzMwODk5My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 </body>
 </html>
